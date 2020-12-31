@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><link rel='stylesheet' href='etch.css'></head>
+<body>
+    <h1>Etch-A-Sketch</h1>
+    <div id='divcontainer'></div>
+</body>
+<script>
+    let divContainer = document.querySelector('#divcontainer');
+    let gridSize = 100;
+
+    for (i=0; i < gridSize*gridSize; i++) {
+        let newDiv = document.createElement('div');
+        divContainer.appendChild(newDiv);
+        newDiv.classList = 'etchboxes';
+        let offset = gridSize * 2;                              //offset necessary to remove effect of 1px border on width and height of squares//
+        newDiv.style.width = ((750-offset) / gridSize) + 'px';
+        newDiv.style.height = ((750-offset) / gridSize) + 'px';
+    }
+
+    let gridBoxes = divContainer.querySelectorAll('div');
+    let gridBoxesArr = Array.from(gridBoxes);
+
+    divContainer.addEventListener('click', function() {
+        divContainer.addEventListener('mouseover', function(e) {    //example of event delegation//
+            if (e.target && e.target.matches('.etchboxes')) {
+                e.target.style.backgroundColor = 'yellow';
+            }
+        });
+    });
+</script>
+</html>
