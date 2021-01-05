@@ -3,30 +3,103 @@
 <head><meta charset="utf-8"><link rel='stylesheet' href='etch.css'></head>
 <body>
     <h1>Etch-A-Sketch</h1>
+    <button id='clear'>Clear</button>
+    <div>
+        <input type='range' id='gridinput' name='gridSize' min='4' max='100'> 
+        <label for='gridinput'>Grid Size</label>
+    </div>
+    <div>
+        <button id='shade'>Shade</button>
+        <button id='black'>black</button>
+        <button id='RGB'>Random Colour Selector</button>
+        <input type='color' id='colorInput' name='color' value='Color'>
+        <label for='color'>Colour Selector</label>
+    </div>
+    
     <div id='divcontainer'></div>
+
 </body>
 <script>
     let divContainer = document.querySelector('#divcontainer');
-    let gridSize = 100;
-
+    let range = document.querySelector('#gridinput')
+    let gridSize = range.value;
+    range.addEventListener('change', function() {
+        let gridSize = range.value;
+    })
+    
+    console.log(gridSize);
+    
     for (i=0; i < gridSize*gridSize; i++) {
         let newDiv = document.createElement('div');
+
         divContainer.appendChild(newDiv);
         newDiv.classList = 'etchboxes';
         let offset = gridSize * 2;                              //offset necessary to remove effect of 1px border on width and height of squares//
         newDiv.style.width = ((750-offset) / gridSize) + 'px';
         newDiv.style.height = ((750-offset) / gridSize) + 'px';
     }
-
+    
     let gridBoxes = divContainer.querySelectorAll('div');
     let gridBoxesArr = Array.from(gridBoxes);
 
-    divContainer.addEventListener('click', function() {
+    function onClickHover(color) {
         divContainer.addEventListener('mouseover', function(e) {    //example of event delegation//
             if (e.target && e.target.matches('.etchboxes')) {
-                e.target.style.backgroundColor = 'yellow';
+                e.target.style.backgroundColor = color;
             }
         });
+    }
+
+    divContainer.addEventListener('click', onClickHover);
+    // divContainer.removeEventListener('click', onClickHover);  not working, need to comeback//
+
+    let clearButton = document.querySelector('#clear');
+    clearButton.addEventListener('click', function() {
+        for (i=0; i < gridSize*gridSize; i++){
+        gridBoxesArr[i].style.backgroundColor = 'white';
+        }
     });
+
+    let blackButton = document.querySelector('#black');
+    blackButton.addEventListener('click', function() {
+        divContainer.addEventListener('click', onClickHover('black'));
+    });
+
+    let colorSelectorButton = document.querySelector('#colorInput');
+    colorSelectorButton.addEventListener('click', function() {
+        divContainer.addEventListener('click', onClickHover(colorSelectorButton.value));
+    }); 
+      
+    let randomColorButton = document.querySelector('#RGB');
+    randomColorButton.addEventListener('click', function() {
+        let color = '#'+Math.random().toString(16).substr(2,6);
+        divContainer.addEventListener('click', onClickHover(color));
+    });
+    
+
+    function onClickHoverShade() {
+        divContainer.addEventListener('mouseover', function(e) {
+            if (e.target && e.target.matches('.etchboxes')) {
+                e.target.style.opacity = (Number(e.target.style.opacity) + 0.1);
+            }
+        });
+    };
+
+    let shadeButton = document.querySelector('#shade');
+    shadeButton.addEventListener('click', function() {
+        divContainer.addEventListener('click', onClickHoverShade());
+    });
+
+    // let opacity = cell.style.opacity;
+    //     if (cell.classList.contains("shade")) {
+    //       cell.style.opacity = (Number(opacity) + 0.1);
 </script>
 </html>
+
+<!-- problem : change div color by an extra 10% darkness (hla color scheme) on every mouse over; 
+start with addeventlistener for divs
+listen for mouseover
+run a function that changes percentage darkness by -10% each time
+return this value
+plug this value into color scheme
+plug color scheme value into coloring function-->

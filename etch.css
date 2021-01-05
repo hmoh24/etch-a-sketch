@@ -6,8 +6,8 @@ html {
 
 
 .etchboxes {
-    background-color: palevioletred;
-    border: 1px solid rgb(207, 255, 192);
+    background-color: white;
+    border: 1px solid rgb(241, 240, 240) !important;
     height: 73px;
     width: 73px; 
 }
@@ -15,7 +15,7 @@ html {
 #divcontainer {
     height: 750px;
     width: 750px;
-    background-color: black;
+    background-color: white;
     display: flex;
     flex-flow: row wrap;
 }
