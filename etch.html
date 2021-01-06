@@ -42,10 +42,12 @@
     let gridBoxes = divContainer.querySelectorAll('div');
     let gridBoxesArr = Array.from(gridBoxes);
 
-    function onClickHover(color) {
+    let onClickHover = function(color){
         divContainer.addEventListener('mouseover', function(e) {    //example of event delegation//
+            e.target.removeAttribute('data-shader')    
             if (e.target && e.target.matches('.etchboxes')) {
                 e.target.style.backgroundColor = color;
+                e.target.style.opacity = 1;
             }
         });
     }
@@ -57,6 +59,8 @@
     clearButton.addEventListener('click', function() {
         for (i=0; i < gridSize*gridSize; i++){
         gridBoxesArr[i].style.backgroundColor = 'white';
+        gridBoxesArr[i].style.opacity = 1;
+        gridBoxesArr[i].removeAttribute('data-shader');
         }
     });
 
@@ -64,6 +68,7 @@
     blackButton.addEventListener('click', function() {
         divContainer.addEventListener('click', onClickHover('black'));
     });
+    
 
     let colorSelectorButton = document.querySelector('#colorInput');
     colorSelectorButton.addEventListener('click', function() {
@@ -77,10 +82,13 @@
     });
     
 
-    function onClickHoverShade() {
+    let onClickHoverShade = function (e){
         divContainer.addEventListener('mouseover', function(e) {
-            if (e.target && e.target.matches('.etchboxes')) {
-                e.target.style.opacity = (Number(e.target.style.opacity) + 0.1);
+            e.target.setAttribute('data-shader', 'on')
+            let opacity = Number(e.target.style.opacity)
+            if (e.target && e.target.matches('.etchboxes') && e.target.getAttribute('data-shader') == 'on') {
+                e.target.style.opacity = opacity >= 1 ? '1' : opacity + 0.1 + '';
+                e.target.style.backgroundColor = 'black';
             }
         });
     };
@@ -88,6 +96,7 @@
     let shadeButton = document.querySelector('#shade');
     shadeButton.addEventListener('click', function() {
         divContainer.addEventListener('click', onClickHoverShade());
+        divContainer.removeEventListener('click', onClickHover, true);
     });
 
     // let opacity = cell.style.opacity;
@@ -103,3 +112,12 @@ run a function that changes percentage darkness by -10% each time
 return this value
 plug this value into color scheme
 plug color scheme value into coloring function-->
+
+<!-- problem:
+unable to remove event listener from shader function
+1. possible to add event listener if data attribute is x, and remove if that isnt true
+2. #1 didnt work, possibly remove the click event before -->
+
+
+<!-- Would like to add a transition effect (didnt learn last project) to color addition
+so that when new color is added, a blend transition is included-->
