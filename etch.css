@@ -1,25 +1,127 @@
-html {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
 }
 
 
+body {
+    display: grid;
+    grid-template-columns: 1fr 3fr 5fr 1fr;
+    grid-template-rows: 1fr 6fr;
+    background-color: teal;
+    height: 100%;
+}
+
+h1 {
+    grid-column: 1/5;
+    grid-row: 1/2;
+    color: white;
+    text-shadow: whitesmoke 0px 0px 10px;
+}
+
 .etchboxes {
-    background-color: white;
-    border: 1px solid rgb(241, 240, 240) !important;
-    height: 73px;
-    width: 73px; 
+    background-color: transparent;
+    border: 1px solid rgb(255, 255, 255);
+    height: 50px;
+    width: 50px;
 }
 
 #divcontainer {
-    height: 750px;
-    width: 750px;
+    height: 500px;
+    width: 500px;
     background-color: white;
     display: flex;
     flex-flow: row wrap;
+    grid-column: 3/4;
+    grid-row: 2/3;
+    border-style: outset;
+    border-color: white;
+    border-radius: 5px;
+    border-width: 5px;
+    box-shadow: 0px 0px 5px white;
 }
 
 .hovered:focus {
     background-color: purple;
 }
+
+#buttonHolder {
+    grid-column: 2/3;
+    grid-row: 2/3;
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    height: 500px;
+    background-color: turquoise;
+    border-radius: 5px;
+    padding: 0.5rem;
+    border-color: white;
+    border-style: solid;
+    border-width: 2.5px;
+}
+
+button {
+    background-color: transparent;
+    border-color: white;
+    border-style: solid;
+    border-width: 2.5px;
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    margin: 5px 0px;
+    padding: 2.5px;
+}
+
+button:active {
+    background-color: white;
+    color: turquoise;
+    box-shadow: 0px 0px 5px white;
+}
+
+button:visited {
+    background-color: white;
+    color: turquoise;
+}
+
+
+/* problem with zooming which break etch screen 
+add class to DOM when button is clicked on have same properties as visited psuedoclass*/

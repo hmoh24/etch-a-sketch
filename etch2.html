@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head><meta charset="utf-8"><link rel='stylesheet' href='etch.css'></head>
+
 <body>
     <h1>Etch-A-Sketch</h1>
-    <button id='clear'>Clear</button>
-    <div>
+    <div id='buttonHolder'>
+        <button id='clear'>Clear</button>
         <input type='range' id='gridinput' name='gridSize' min='4' max='100'> 
         <label for='gridinput'>Grid Size</label>
-    </div>
-    <div>
         <button id='shade'>Shade</button>
         <button id='black'>black</button>
         <button id='select'>Random Colour Selector</button>
@@ -16,10 +15,9 @@
         <input type='color' id='colorInput' name='color' value='Color'>
         <label for='color'>Colour Selector</label>
     </div>
-    
     <div id='divcontainer'></div>
-
 </body>
+
 <script>
     let divContainer = document.querySelector('#divcontainer');
     let range = document.querySelector('#gridinput')
@@ -34,8 +32,8 @@
         divContainer.appendChild(newDiv);
         newDiv.classList = 'etchboxes';
         let offset = gridSize * 2;                              //offset necessary to remove effect of 1px border on width and height of squares//
-        newDiv.style.width = ((750-offset) / gridSize) + 'px';
-        newDiv.style.height = ((750-offset) / gridSize) + 'px';
+        newDiv.style.width = ((500-offset) / gridSize) + 'px';
+        newDiv.style.height = ((500-offset) / gridSize) + 'px';
     }
     
     let gridBoxes = divContainer.querySelectorAll('div');
@@ -46,8 +44,8 @@
     let clearButton = document.querySelector('#clear');
     clearButton.addEventListener('click', function() {
         for (i=0; i < gridSize*gridSize; i++){
-        gridBoxesArr[i].style.backgroundColor = 'white';
-        gridBoxesArr[i].style.opacity = 1;
+        gridBoxesArr[i].style.backgroundColor = 'transparent';
+        gridBoxesArr[i].style.opacity = 0;
         gridBoxesArr[i].removeAttribute('data-shader');
         }
     });
@@ -85,28 +83,35 @@
                 if (pen === 'black') {
                     e.target.style.backgroundColor = 'black';
                     e.target.style.opacity = 1;
-                    console.log(pen);
+                    e.target.setAttribute('data-shader', 'on')                    
                 }
                 else if (pen == 'random') {
                     e.target.style.backgroundColor = color;
                     e.target.style.opacity = 1;
-                    console.log(pen);
+                    e.target.removeAttribute('data-shader')
                 }
                
                 else if (pen == 'select') {
                     e.target.style.backgroundColor = colorSelectorButton.value;
                     e.target.style.opacity = 1;
+                    e.target.removeAttribute('data-shader')
                 }
-                else if (pen == 'shade') {
+                else if (pen == 'shade' && e.target.style.opacity < 1) {
                     e.target.style.opacity = Number(e.target.style.opacity) + 0.1 + '';
                     e.target.style.backgroundColor = 'black';
+                    e.target.setAttribute('data-shader', 'on')
                 }
                 else if (pen == 'rainbow') {
                     e.target.style.backgroundColor = '#'+Math.random().toString(16).substr(2,6);
                     e.target.style.opacity = 1;
+                    e.target.removeAttribute('data-shader')
                 }
                 else {let pen = 'shade'}
             }
+            if (e.target && e.target.matches('.etchboxes') && e.target.getAttribute('data-shader') !== 'on' && pen == 'shade') {
+                        e.target.style.backgroundColor = 'black';
+                        e.target.style.opacity = 0.1;
+                        }
 
         });
 
