@@ -11,7 +11,7 @@
     <div>
         <button id='shade'>Shade</button>
         <button id='black'>black</button>
-        <button id='RGB'>Random Colour Selector</button>
+        <button id='select'>Random Colour Selector</button>
         <input type='color' id='colorInput' name='color' value='Color'>
         <label for='color'>Colour Selector</label>
     </div>
@@ -42,7 +42,7 @@
     let gridBoxes = divContainer.querySelectorAll('div');
     let gridBoxesArr = Array.from(gridBoxes);
 
-    let onClickHover = function(color){
+    function onClickHover(color){
         divContainer.addEventListener('mouseover', function(e) {    //example of event delegation//
             e.target.removeAttribute('data-shader')    
             if (e.target && e.target.matches('.etchboxes')) {
@@ -75,20 +75,25 @@
         divContainer.addEventListener('click', onClickHover(colorSelectorButton.value));
     }); 
       
-    let randomColorButton = document.querySelector('#RGB');
+    let randomColorButton = document.querySelector('#select');
     randomColorButton.addEventListener('click', function() {
         let color = '#'+Math.random().toString(16).substr(2,6);
         divContainer.addEventListener('click', onClickHover(color));
     });
     
 
-    let onClickHoverShade = function (e){
+    function onClickHoverShade(e){
         divContainer.addEventListener('mouseover', function(e) {
             e.target.setAttribute('data-shader', 'on')
             let opacity = Number(e.target.style.opacity)
-            if (e.target && e.target.matches('.etchboxes') && e.target.getAttribute('data-shader') == 'on') {
-                e.target.style.opacity = opacity >= 1 ? '1' : opacity + 0.1 + '';
+            if (e.target && e.target.matches('.etchboxes') && e.target.getAttribute('data-shader') == 'on' && e.target.style.opacity < 1) {
+                e.target.style.opacity = Number(e.target.style.opacity) + 0.1 + '';
                 e.target.style.backgroundColor = 'black';
+                e.target.removeEventListener('mouseover', onClickHover);
+            }
+            else {
+                e.target.style.backgroundColor = 'black';
+                e.target.style.opacity = 1;
             }
         });
     };
@@ -96,7 +101,6 @@
     let shadeButton = document.querySelector('#shade');
     shadeButton.addEventListener('click', function() {
         divContainer.addEventListener('click', onClickHoverShade());
-        divContainer.removeEventListener('click', onClickHover, true);
     });
 
     // let opacity = cell.style.opacity;
@@ -116,7 +120,9 @@ plug color scheme value into coloring function-->
 <!-- problem:
 unable to remove event listener from shader function
 1. possible to add event listener if data attribute is x, and remove if that isnt true
-2. #1 didnt work, possibly remove the click event before -->
+2. #1 didnt work, possibly remove the click event before 
+3. Couldnt figure out how to remove, making a restart with a global variable and event listening ONCE, 
+    with each button choosing a different conditional in this overall event listener-->
 
 
 <!-- Would like to add a transition effect (didnt learn last project) to color addition
