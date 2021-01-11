@@ -18,38 +18,69 @@
         <label for='color' id='selectorinput'>Colour selector</label>
     </div>
     <div id='divcontainer'></div>
+    <div id='textbox'>
+        <h2>Instructions:</h2>
+        <ul>
+            <li>Click on the etch screen to begin.</li>
+            <li>If you choose the random colour button, clicking on the etch screen changes the colour each time!</li>
+            <li>Drag the slider to change the grid size of the etch screen.</li>
+            <li>Have fun!</li>
+        </ul>
+    </div>
 </body>
 
 <script>
     let divContainer = document.querySelector('#divcontainer');
     let range = document.querySelector('#gridinput');
-    console.log(range);
-    let gridSize = range.value;
-    range.addEventListener('change', function() {
-        let gridSize = range.value;
-    })
-    
+    console.log(range.value);
+    let gridSize = 50;
     for (i=0; i < gridSize*gridSize; i++) {
         let newDiv = document.createElement('div');
-
         divContainer.appendChild(newDiv);
-        newDiv.classList = 'etchboxes';                             //offset necessary to remove effect of 1px border on width and height of squares//
+        newDiv.classList = 'etchboxes';                             
         newDiv.style.width = ((500) / gridSize) + 'px';
         newDiv.style.height = ((500) / gridSize) + 'px';
-    }
+    };
+
     
-    let gridBoxes = divContainer.querySelectorAll('div');
-    let gridBoxesArr = Array.from(gridBoxes);
+    range.addEventListener('change', function() {
+        while (divContainer.lastElementChild) {
+            divContainer.removeChild(divContainer.lastElementChild);
+        }
+        let size = range.value;
+
+        for (i=0; i < size*size; i++) {
+        let newDiv = document.createElement('div');
+        divContainer.appendChild(newDiv);
+        newDiv.classList = 'etchboxes';                             
+        newDiv.style.width = ((500) / size) + 'px';
+        newDiv.style.height = ((500) / size) + 'px';
+    };
+
+    });
+    
+    
+    
+    
 
     var pen = 'shade';
 
     let clearButton = document.querySelector('#clear');
     clearButton.addEventListener('click', function() {
-        for (i=0; i < gridSize*gridSize; i++){
-        gridBoxesArr[i].style.backgroundColor = 'transparent';
-        gridBoxesArr[i].style.opacity = 0;
-        gridBoxesArr[i].removeAttribute('data-shader');
-        }
+        let gridBoxes = divContainer.getElementsByClassName('etchboxes');
+        let gridBoxesArr = Array.from(gridBoxes);
+        gridBoxesArr.forEach(function(item){
+            item.style.backgroundColor = 'transparent';
+            item.style.opacity = 0;
+            item.removeAttribute('data-shader');
+        })
+
+        // for (i=0; i < size*size; i++){
+        // gridBoxesArr[i].style.backgroundColor = 'transparent';
+        // gridBoxesArr[i].style.opacity = 0;
+        // gridBoxesArr[i].removeAttribute('data-shader');
+        // }
+        // console.log(size);
     });
 
     let blackButton = document.querySelector('#black');
